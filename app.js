@@ -239,11 +239,14 @@ async function viewUnsorted() {
   const draw = () => {
     const rows = all.filter(x => !x.done && (!pick.value || x.book === pick.value));
     body.replaceChildren(el('p', { className: 'hint' }, rows.length + ' ledgers are hidden from everyone but super-admins until you choose an area.'), table(['Company', 'Ledger', 'Tally group', 'Area'], rows.slice(0, 200).map(x => {
-      const sel = el('select', { onchange: ev => busy(ev.target, async () => { await manage('sort_ledger', { book: x.book, ledger: x.ledger, area: sel.value }); x.done = true; draw(); say(x.ledger + ' is sorted.', true); }) },
+      const sel = el('select', { onchange: ev => busy(ev.target, async () => { await manage('sort_ledger', { book: x.book, ledger: x.ledger, area: sel.value }); x.done = true; draw();
+          if (typeof addSorted === 'function') addSorted({ book: x.book, ledger: x.ledger, group: x.group, area: sel.value, by: 'you' });
+          say(x.ledger + ' is sorted. Wrong choice? Change it or press Undo in "Sorted by hand" below.', true); }) },
         el('option', { value: '' }, 'Choose…'), ...LEDGER_AREAS.map(k => el('option', { value: k }, Object.fromEntries(AREAS)[k])));
       return [x.book, x.ledger, x.group, sel];
     })));
   };
+  let addSorted = null;
   pick.addEventListener('change', draw); draw();
   // ledgers already sorted by hand: change the area, or undo (back to the automatic rule / unsorted)
   const done = await manage('sorted'), names = Object.fromEntries(AREAS);
@@ -257,6 +260,7 @@ async function viewUnsorted() {
       return [x.book, x.ledger, x.group || '', sel, x.by || '', undo];
     })));
   drawSorted();
+  addSorted = x => { done.unshift(x); drawSorted(); };       // a fresh choice shows up here at once, with Undo
   return [el('h2', {}, 'Unsorted ledgers'), el('label', { style: 'max-width:420px' }, 'Company', pick), body, sortedBox];
 }
 async function viewLog() {
