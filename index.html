@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src data:; connect-src https://pvixwpksfniwwwktrygw.supabase.co; base-uri 'none'; form-action 'none'">
+<title>Tally Data Access</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="mark">T</span> Tally Data Access</div>
+  <div id="who" hidden><span id="whoName"></span><button id="signOut" class="quiet">Sign out</button></div>
+</header>
+<main>
+  <div id="msg" role="status" hidden></div>
+
+  <form id="signIn" class="card narrow" hidden>
+    <h1>Sign in</h1>
+    <label>Email or short name <input id="email" autocapitalize="none" autocomplete="username" required></label>
+    <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+    <button class="main">Sign in</button>
+    <p class="hint">Forgot the password? Ask a super-admin to reset it.</p>
+  </form>
+
+  <form id="codeForm" class="card narrow" hidden>
+    <h1>Two-step sign-in</h1>
+    <p>Type the 6-digit code from your authenticator app.</p>
+    <label>Code <input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+    <button class="main">Continue</button>
+  </form>
+
+  <form id="enrol" class="card narrow" hidden>
+    <h1>Set up two-step sign-in</h1>
+    <ol>
+      <li>Open an authenticator app on your phone, such as Google Authenticator.</li>
+      <li>Scan this picture, or type the key below it.</li>
+      <li>Type the 6-digit code the app shows.</li>
+    </ol>
+    <img id="qr" alt="Two-step sign-in picture to scan" width="200" height="200">
+    <p class="key" id="totpKey"></p>
+    <label>Code <input id="enrolCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+    <button class="main">Turn on</button>
+    <button type="button" id="enrolSkip" class="quiet" hidden>Not now</button>
+  </form>
+
+  <div id="app" hidden>
+    <nav id="tabs" role="tablist"></nav>
+    <section id="view"></section>
+  </div>
+</main>
+<script src="boot.js"></script>
+
+</body>
+</html>
