@@ -2,12 +2,12 @@
 // Signs in with Supabase's own login and calls the fixed functions. The database decides everything; this page decides nothing.
 // The sign-in lives in memory only: closing or reloading the page signs out.
 
-const AREAS = [['ledgers', 'Ledgers and balances'], ['sales', 'Sales and receivables'], ['purchases', 'Purchases and payables'], ['bank', 'Bank and cash'], ['stock', 'Stock / inventory'],
+const AREAS = [['ledgers', 'Ledgers and balances'], ['sales', 'Sales and receivables'], ['purchases', 'Purchases and payables'], ['bank', 'Bank and cash'], ['stock', 'Stock / inventory'], ['production', 'Production / manufacturing'],
   ['tax', 'GST / statutory'], ['salary', 'Payroll / salaries'], ['pnl', 'Profit and loss'], ['balsheet', 'Balance sheet'], ['reports', 'Reports / dashboards'],
   ['expenses', 'Expenses'], ['loans', 'Loans and capital'], ['investments', 'Investments and property'], ['income', 'Other income']];
 const LEDGER_AREAS = ['sales', 'purchases', 'bank', 'expenses', 'salary', 'tax', 'loans', 'investments', 'income', 'pnl'];   // a ledger can belong to one of these
-const ROLES = { 'Accountant': AREAS.map(a => a[0]), 'Management / owner': ['pnl', 'balsheet', 'reports', 'sales', 'purchases', 'bank'], 'Sales': ['sales', 'stock', 'reports'],
-  'Purchase': ['purchases', 'stock', 'reports'], 'Cashier': ['bank'], 'Store / logistics': ['stock'], 'HR / payroll': ['salary'], 'GST / compliance': ['tax', 'reports'] };
+const ROLES = { 'Accountant': AREAS.map(a => a[0]), 'Management / owner': ['pnl', 'balsheet', 'reports', 'sales', 'purchases', 'bank', 'production', 'stock'], 'Sales': ['sales', 'stock', 'reports'],
+  'Purchase': ['purchases', 'stock', 'reports'], 'Cashier': ['bank'], 'Store / logistics': ['stock', 'production'], 'Production': ['production', 'stock'], 'HR / payroll': ['salary'], 'GST / compliance': ['tax', 'reports'] };
 const POWER = { super_admin: 'Super-admin', manager: 'Manager', member: 'Member' };
 const $ = id => document.getElementById(id);
 let S = null, ME = null, factor = null, BOOKS = [], TABS = {};
